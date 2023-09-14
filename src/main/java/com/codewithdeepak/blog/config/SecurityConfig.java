@@ -30,7 +30,6 @@ import com.codewithdeepak.blog.security.JwtAuthenticationFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	public static final String[] PUBLIC_URLS = {
-//			"/api/users/**",
 			"/api/v1/auth/**",
 			"/v3/api-docs",
 			"/v2/api-docs",

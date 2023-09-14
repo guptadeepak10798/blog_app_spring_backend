@@ -49,7 +49,7 @@ public class JwtTokenHelper {
 		return doGenerateToken(claims, userDetails.getUsername());
 	}
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
-		System.out.println("claims => "+claims.keySet());
+	System.out.println("claims => "+claims.keySet());
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY*1000)).signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
