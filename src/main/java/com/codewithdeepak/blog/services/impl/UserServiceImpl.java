@@ -1,6 +1,5 @@
 package com.codewithdeepak.blog.services.impl;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,7 +13,6 @@ import com.codewithdeepak.blog.config.AppConstants;
 import com.codewithdeepak.blog.entities.Role;
 import com.codewithdeepak.blog.entities.User;
 import com.codewithdeepak.blog.exceptions.ResourceNotFoundException;
-import com.codewithdeepak.blog.payloads.RoleDto;
 import com.codewithdeepak.blog.payloads.UserDto;
 import com.codewithdeepak.blog.services.UserService;
 import com.codewithdeepak.blog.repositories.*;
