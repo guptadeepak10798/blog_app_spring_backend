@@ -14,6 +14,7 @@ import com.codewithdeepak.blog.config.AppConstants;
 import com.codewithdeepak.blog.entities.Role;
 import com.codewithdeepak.blog.entities.User;
 import com.codewithdeepak.blog.exceptions.ResourceNotFoundException;
+import com.codewithdeepak.blog.payloads.JwtAuthRequest;
 import com.codewithdeepak.blog.payloads.RoleDto;
 import com.codewithdeepak.blog.payloads.UserDto;
 import com.codewithdeepak.blog.services.UserService;
@@ -131,4 +132,16 @@ public class UserServiceImpl implements UserService {
 		return this.modelMapper.map(newUser, UserDto.class);
 	}
 
+	
+	@Override
+	public Set<Role> getUserRole(JwtAuthRequest request) {
+		
+		User user = this.userRepo.findByEmail(request.getUsername()).get();
+		Set<Role> roles = user.getRoles();
+		System.out.println("roles ===>"+roles);
+		return roles;
+//				.orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
+//		return this.userToDto(user).toString();
+//		return user.toString();
+	}
 }
