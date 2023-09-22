@@ -1,5 +1,6 @@
 package com.codewithdeepak.blog.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -8,11 +9,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.codewithdeepak.blog.config.AppConstants;
 import com.codewithdeepak.blog.entities.Role;
 import com.codewithdeepak.blog.entities.User;
 import com.codewithdeepak.blog.exceptions.ResourceNotFoundException;
+import com.codewithdeepak.blog.payloads.JwtAuthRequest;
 import com.codewithdeepak.blog.payloads.UserDto;
 import com.codewithdeepak.blog.services.UserService;
 import com.codewithdeepak.blog.repositories.*;
@@ -43,8 +46,14 @@ public class UserServiceImpl implements UserService {
 //		userDto.setRoles(roles);
 		
 		User user = this.dtoToUser(userDto);// converting userdto to user
+		user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
+//		user.setUserProfilePicture("default.png");
 		User savedUser = this.userRepo.save(user);
 		return this.userToDto(savedUser);
+	}
+	
+	public String generateDefaultProfilePicture() {
+		return null;
 	}
 
 	@Override
@@ -56,9 +65,13 @@ public class UserServiceImpl implements UserService {
 		user.setName(userDto.getName());
 		user.setEmail(userDto.getEmail());
 		user.setAbout(userDto.getAbout());
-		user.setPassword(userDto.getPassword());
+//		user.setPassword(userDto.getPassword());
+		String updatedEncodedPassword = this.passwordEncoder.encode(userDto.getPassword());
+		user.setPassword(updatedEncodedPassword);
 		Role role = this.roleRepo.findById(AppConstants.NORMAL_USER).get();
 		user.getRoles().add(role);
+//		String profileImageName = file.getOriginalFilename();
+//		user.setUserProfilePicture(profileImageName);
 		User updatedUser = this.userRepo.save(user);
 		UserDto userDto1 = this.userToDto(updatedUser);
 		return userDto1;
@@ -69,7 +82,7 @@ public class UserServiceImpl implements UserService {
 
 		User user = this.userRepo.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
-
+		
 		return this.userToDto(user);
 	}
 
@@ -82,6 +95,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void deleteUser(Integer userId) {
+		
 		User userTobeDeleted = this.userRepo.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
 		this.userRepo.delete(userTobeDeleted);
@@ -106,6 +120,8 @@ public class UserServiceImpl implements UserService {
 		 * userDto.setName(user.getName()); userDto.setEmail(user.getEmail());
 		 * userDto.setPassword(user.getPassword()); userDto.setAbout(user.getAbout());
 		 */
+//		userDto.setUserProfilePicture("Z:\\Java Codes\\Blog-app-api\\images\\"+user.getUserProfilePicture());
+		
 		return userDto;
 
 	}
@@ -128,5 +144,26 @@ public class UserServiceImpl implements UserService {
 		    }
 		return this.modelMapper.map(newUser, UserDto.class);
 	}
+
+//	@Override
+//	public String getUserRole(JwtAuthRequest request) {
+//		// TODO Auto-generated method stub
+//		return request.getUsername();
+//	}
+
+	@Override
+	public Set<Role> getUserRole(JwtAuthRequest request) {
+		
+		User user = this.userRepo.findByEmail(request.getUsername()).get();
+		Set<Role> roles = user.getRoles();
+		System.out.println("roles ===>"+roles);
+		return roles;
+//				.orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
+//		return this.userToDto(user).toString();
+//		return user.toString();
+	}
+	
+	
+	
 
 }

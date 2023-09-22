@@ -10,8 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.codewithdeepak.blog.config.AppConstants;
-import com.codewithdeepak.blog.entities.Role;
 import com.codewithdeepak.blog.repositories.RoleRepo;
 
 @SpringBootApplication

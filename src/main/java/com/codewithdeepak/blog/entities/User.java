@@ -48,6 +48,8 @@ public class User implements UserDetails {
 	private String password;
 
 	private String about;
+	
+//	private String userProfilePicture;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Post> posts = new ArrayList<>();
@@ -59,7 +61,7 @@ public class User implements UserDetails {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", about=" + about
-				+ "]";
+				+ ", posts=" + posts + ", roles=" + roles + "]";
 	}
 
 	@Override
@@ -98,5 +100,9 @@ public class User implements UserDetails {
 		// TODO Auto-generated method stub
 		return true;
 	}
+
+	
+
+	
 
 }
